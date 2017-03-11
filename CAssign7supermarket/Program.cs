@@ -212,7 +212,6 @@ namespace CAssign6Supermarket
             }
         }
 
-/// <summary>
 /// use ExecuteScalar method
 /// </summary>
 /// <returns>number of records</returns>
