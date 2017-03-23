@@ -24,7 +24,7 @@ namespace CAssign6Supermarket
         {
             SqlCommandDemo scd = new SqlCommandDemo();
 
-            /* Console.WriteLine("\nCustomers Before Insert");
+            Console.WriteLine("\nCustomers Before Insert");
 
              // use ExecuteReader method
              scd.ReadData("select CustomerName from CUSTOMER");
@@ -46,31 +46,41 @@ namespace CAssign6Supermarket
              scd.ReadData("select ProductName from PRODUCT");
 
 
-             Console.WriteLine("\nOrders Before Delete");
-             scd.ReadData("select OrderName from ORDERS");
+             Console.WriteLine("\nCustomers Before Delete");
+             scd.ReadData("select CustomerName from CUSTOMER");
 
              // use ExecuteNonQuery method for Delete
              scd.DeleteData();
 
-             Console.WriteLine("\nOrders After Delete");
+             Console.WriteLine("\nCustomers After Delete");
 
-             scd.ReadData("select OrderName from ORDERS");*/
+             scd.ReadData("select CustomerName from CUSTOMER");
+
             // use ExecuteScalar method
             int meanPrice = scd.GetMeanPrice();
 
             Console.WriteLine();
             Console.WriteLine("Mean Price of Orders: {0}", meanPrice);
+            
+            // use ExecuteScalar method
+            int totalOrders = scd.GetTotalOrders();
+            
+            Console.WriteLine("\nTotal Price of Orders: {0}", totalOrders);
 
-            /*Console.WriteLine("\nOrders Before Delete");
-            scd.ReadData("select OrderName from ORDERS");
+            // use ExecuteScalar method
+            int maxPrice = scd.GetMaxPrice();
 
-            // use ExecuteNonQuery method for Delete
-            scd.DeleteData();
+            Console.WriteLine("\nLargest Price of Orders: {0}", maxPrice);
 
-            Console.WriteLine("\nOrders After Delete");
+            // use ExecuteScalar method
+            int minPrice = scd.GetMinPrice();
 
-            scd.ReadData("select OrderName from ORDERS");*/
+            Console.WriteLine("\nLowest Price of Orders: {0}", minPrice);
 
+            // use ExecuteScalar method
+            int numProducts = scd.GetNumProducts();
+
+            Console.WriteLine("\nNumber of Products: {0}", numProducts);
 
             Console.Read();
         }
@@ -128,7 +138,7 @@ namespace CAssign6Supermarket
                 string insertString = @"
                  insert into CUSTOMER
                  (CustomerName,CustomerAddress)
-                 values ('Maureen', 'Kerry')";
+                 values ('Mary', 'Kerry')";
 
                 // 1. Instantiate a new command with a query and connection
                 SqlCommand cmd = new SqlCommand(insertString, conn);
@@ -187,8 +197,8 @@ namespace CAssign6Supermarket
 
                 // prepare command string
                 string deleteString = @"
-                 delete from ORDERS
-                 where OrderName = 'Mary'";
+                 delete from CUSTOMER
+                 where CustomerName = 'Mary'";
 
                 // 1. Instantiate a new command
                 SqlCommand cmd = new SqlCommand();
@@ -212,10 +222,115 @@ namespace CAssign6Supermarket
             }
         }
 
-/// use ExecuteScalar method
-/// </summary>
-/// <returns>number of records</returns>
-public int GetMeanPrice()
+        public int GetTotalOrders()
+        {
+            int sum;
+
+            try
+            {
+                // Open the connection
+                conn.Open();
+
+                // 1. Instantiate a new command
+                SqlCommand cmd = new SqlCommand("select sum(Price) from ORDERS", conn);
+
+                // 2. Call ExecuteScalar to send command
+                sum = (int)cmd.ExecuteScalar();
+            }
+            finally
+            {
+                // Close the connection
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+            return sum;
+        }
+
+        //use ExecuteScalar method
+        public int GetMaxPrice()
+        {
+            int max;
+
+            try
+            {
+                // Open the connection
+                conn.Open();
+
+                // 1. Instantiate a new command
+                SqlCommand cmd = new SqlCommand("select max(Price) from ORDERS", conn);
+
+                // 2. Call ExecuteScalar to send command
+                max = (int)cmd.ExecuteScalar();
+            }
+            finally
+            {
+                // Close the connection
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+            return max;
+        }
+
+        //use ExecuteScalar method
+        public int GetMinPrice()
+        {
+            int min;
+
+            try
+            {
+                // Open the connection
+                conn.Open();
+
+                // 1. Instantiate a new command
+                SqlCommand cmd = new SqlCommand("select min(Price) from ORDERS", conn);
+
+                // 2. Call ExecuteScalar to send command
+                min = (int)cmd.ExecuteScalar();
+            }
+            finally
+            {
+                // Close the connection
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+            return min;
+        }
+
+        //use ExecuteScalar method
+        public int GetNumProducts()
+        {
+            int count;
+
+            try
+            {
+                // Open the connection
+                conn.Open();
+
+                // 1. Instantiate a new command
+                SqlCommand cmd = new SqlCommand("select count(*) from PRODUCT", conn);
+
+                // 2. Call ExecuteScalar to send command
+                count = (int)cmd.ExecuteScalar();
+            }
+            finally
+            {
+                // Close the connection
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+            return count;
+        }
+
+        //use ExecuteScalar method
+        public int GetMeanPrice()
         {
             int avg;
 
